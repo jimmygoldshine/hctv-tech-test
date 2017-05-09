@@ -9,7 +9,7 @@ describe Broadcaster do
     expect(broadcaster.name).to eq(:Disney)
   end
 
-  it "should allow its name to be changed after initializaition" do
+  it "should allow its name to be overwritten once initialized" do
     broadcaster.name = :Nickelodean
     expect(broadcaster.name).to eq(:Nickelodean)
   end
