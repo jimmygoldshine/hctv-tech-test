@@ -34,6 +34,16 @@ describe Order do
   end
 
   describe "#pre_discount_total" do
+
+    before do
+      order.add_item(disney, standard_delivery)
+      order.add_item(discovery, express_delivery)
+    end
+
+    it "should total up the correct price (before applying discounts)" do
+      expect(order.pre_discount_total).to eq(30.00)
+    end
+
   end
 
 end

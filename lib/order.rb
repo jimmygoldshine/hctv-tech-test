@@ -13,7 +13,11 @@ class Order
   end
 
   def pre_discount_total
-
+    pre_discount_total = 0.0
+    shopping_bag.each_pair do |delivery, broadcaster_list|
+      pre_discount_total += (delivery.price * broadcaster_list.size)
+    end
+    pre_discount_total
   end
 
   private
