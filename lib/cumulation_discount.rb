@@ -1,4 +1,4 @@
-class CumulationDiscount
+class CumulativeValueDiscount
 
   attr_reader :id, :shopping_bag_value_threshold, :discount
 
