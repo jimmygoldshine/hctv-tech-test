@@ -27,7 +27,7 @@ describe CumulativeQuantityDiscount do
   describe "#discounted_value(order)" do
 
     let(:order) { instance_double("Order", :shopping_bag => { express_delivery => ["disney", "discovery", "viacom", "itv"] },
-                                           :shopping_bag_value => 80.00) }
+                                           :gross_shopping_bag_value => 80.00) }
 
     it "should return the correct discount_value" do
       expect(promotion.discount_value(order)).to eq(20)

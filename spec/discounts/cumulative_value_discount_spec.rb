@@ -22,10 +22,10 @@ describe CumulativeValueDiscount do
   describe "#discounted_value(order)" do
 
     let(:order) { instance_double("Order", :shopping_bag => { standard_delivery => ["disney", "discovery", "viacom", "itv"] },
-                                           :shopping_bag_value => 40.00) }
+                                           :gross_shopping_bag_value => 40.00) }
 
     it "should return the correct discount_value" do
-      expect(promotion.discount_value(order.shopping_bag_value)).to eq(4)
+      expect(promotion.discount_value(order.gross_shopping_bag_value)).to eq(4)
     end
   end
 

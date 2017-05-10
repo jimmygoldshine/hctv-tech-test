@@ -33,17 +33,29 @@ describe Order do
     end
   end
 
-  describe "#pre_discount_total" do
+  describe "#total" do
+
+    let(:apply_discounts) { double("ApplyDiscounts") }
 
     before do
       order.add_item(disney, standard_delivery)
       order.add_item(discovery, express_delivery)
+      allow(apply_discounts).to receive(:apply) { -3.00 }
     end
 
-    it "should total up the correct price (before applying discounts)" do
-      expect(order.pre_discount_total).to eq(30.00)
+    it "should total up the correct price" do
+      expect(order.total(apply_discounts)).to eq(27.00)
+    end
+
+    it "should give public access to gross_shopping_bag_value" do
+      order.total(apply_discounts)
+      expect(order.gross_shopping_bag_value).to eq(30.0)
+    end
+
+    it "should give public access to gross_shopping_bag_value" do
+      order.total(apply_discounts)
+      expect(order.discount_value).to eq(-3.0)
     end
 
   end
-
 end

@@ -2,7 +2,7 @@ require 'broadcaster'
 require 'material'
 require 'delivery'
 require 'order'
-require 'apply_discounts'
+require 'calculate_discounts'
 require './lib/discounts/cumulative_value_discount'
 require './lib/discounts/cumulative_quantity_discount'
 

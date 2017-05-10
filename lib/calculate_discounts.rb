@@ -1,13 +1,17 @@
-class ApplyDiscounts
+class CalculateDiscounts
 
   attr_reader :discounts
 
-  def initialize(discounts)
-    @discounts = discounts
+  def initialize
+    @discounts = []
+  end
+
+  def add_discount(discount)
+    discounts << discount
   end
 
   def apply(order)
-    net_shopping_bag_value = order.shopping_bag_value - apply_quantity_discounts(order)
+    net_shopping_bag_value = order.gross_shopping_bag_value - apply_quantity_discounts(order)
     -(apply_quantity_discounts(order) + apply_value_discounts(net_shopping_bag_value))
   end
 
