@@ -1,4 +1,4 @@
-class Promotion
+class ApplyDiscounts
 
   attr_reader :discounts
 

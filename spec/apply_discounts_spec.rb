@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Promotion do
+describe ApplyDiscounts do
 
   let(:standard_delivery) { instance_double("Delivery", :type => "standard", :price => 10.00) }
   let(:express_delivery) { instance_double("Delivery", :type => "express", :price => 20.00) }
