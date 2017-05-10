@@ -7,7 +7,8 @@ class Promotion
   end
 
   def apply(order)
-    -(apply_qunatity_discounts(order) + apply_value_discounts(order.shopping_bag_value))
+    net_shopping_bag_value = order.shopping_bag_value - apply_quantity_discounts(order)
+    -(apply_quantity_discounts(order) + apply_value_discounts(net_shopping_bag_value))
   end
 
   private

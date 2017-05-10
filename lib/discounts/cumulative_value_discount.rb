@@ -10,7 +10,7 @@ class CumulativeValueDiscount
 
   def discount_value(shopping_bag_value)
     discounted_value = 0.00
-    if shopping_bag_value > shopping_bag_value_threshold
+    if shopping_bag_value >= shopping_bag_value_threshold
       discounted_value += (shopping_bag_value * discount)
     end
     discounted_value

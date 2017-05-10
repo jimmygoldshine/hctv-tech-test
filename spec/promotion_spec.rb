@@ -91,4 +91,41 @@ describe Promotion do
     end
   end
 
+  describe "#apply" do
+
+    context "Example 1" do
+
+      let(:order) { instance_double("Order", :shopping_bag => { standard_delivery => ["disney", "discovery", "viacom"],
+                                                                express_delivery => ["horse and country"] },
+                                             :shopping_bag_value => 50.00) }
+      let(:promotion) { described_class.new([value_discount, quantity_discount]) }
+
+      it "should return the correct discount" do
+        expect(promotion.apply(order)).to eq(-5.00)
+      end
+    end
+
+    context "Example 2" do
+
+      let(:order) { instance_double("Order", :shopping_bag => { express_delivery => ["disney", "discovery", "viacom"] },
+                                             :shopping_bag_value => 60.00) }
+      let(:promotion) { described_class.new([value_discount, quantity_discount]) }
+
+      it "should return the correct discount" do
+        expect(promotion.apply(order)).to eq(-19.50)
+      end
+    end
+
+    context "Example 3" do
+
+      let(:order) { instance_double("Order", :shopping_bag => { express_delivery => ["disney"] },
+                                             :shopping_bag_value => 50.00) }
+      let(:promotion) { described_class.new([value_discount, value_discount_2, quantity_discount]) }
+
+      it "should return the correct discount" do
+        expect(promotion.apply(order)).to eq(-10.0)
+      end
+    end
+  end
+
 end
