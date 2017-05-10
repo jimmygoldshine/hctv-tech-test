@@ -3,8 +3,8 @@ require 'material'
 require 'delivery'
 require 'order'
 require 'promotion'
-require 'cumulative_value_discount'
-require 'cumulative_quantity_discount'
+require './lib/discounts/cumulative_value_discount'
+require './lib/discounts/cumulative_quantity_discount'
 
 
 

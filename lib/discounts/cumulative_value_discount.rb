@@ -8,10 +8,10 @@ class CumulativeValueDiscount
     @discount = args[:discount]
   end
 
-  def discount_value(order)
+  def discount_value(shopping_bag_value)
     discounted_value = 0.00
-    if order.shopping_bag_value > shopping_bag_value_threshold
-      discounted_value += (order.shopping_bag_value * discount)
+    if shopping_bag_value > shopping_bag_value_threshold
+      discounted_value += (shopping_bag_value * discount)
     end
     discounted_value
   end

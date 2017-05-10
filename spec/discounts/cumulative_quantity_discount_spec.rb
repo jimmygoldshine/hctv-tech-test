@@ -30,7 +30,7 @@ describe CumulativeQuantityDiscount do
                                            :shopping_bag_value => 80.00) }
 
     it "should return the correct discount_value" do
-      expect(promotion.discounted_value(order)).to eq(20)
+      expect(promotion.discount_value(order)).to eq(20)
     end
   end
 
