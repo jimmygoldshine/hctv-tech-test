@@ -13,7 +13,7 @@ class CumulativeQuantityDiscount
     discounted_value = 0.00
     shopping_bag.each_pair do |delivery_type, broadcaster_list|
       if delivery_methods_match?(delivery_type) && enough_broadcasters?(broadcaster_list)
-        discounted_value += (broadcaster_list.size * delivery_type.price) * discount
+        discounted_value += incremental_discount_value(delivery_type, broadcaster_list)
       end
     end
     discounted_value
@@ -21,12 +21,16 @@ class CumulativeQuantityDiscount
 
   private
 
+  def delivery_methods_match?(delivery_type_obj)
+    delivery_type_obj.type == delivery_method
+  end
+
   def enough_broadcasters?(broadcaster_list)
     broadcaster_list.size >= quantity_threshold
   end
 
-  def delivery_methods_match?(delivery_type_obj)
-    delivery_type_obj.type == delivery_method
+  def incremental_discount_value(delivery_type_obj, broadcaster_list)
+    (broadcaster_list.size * delivery_type_obj.price) * discount
   end
 
 end
