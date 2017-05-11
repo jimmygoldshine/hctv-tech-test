@@ -11,8 +11,8 @@ class CalculateDiscounts
   end
 
   def apply(order)
-    net_shopping_bag_value = order.gross_shopping_bag_value - apply_quantity_discounts(order)
-    -(apply_quantity_discounts(order) + apply_value_discounts(net_shopping_bag_value))
+    net_shopping_bag_value = order.gross_shopping_bag_value - apply_quantity_discounts(order.shopping_bag)
+    -(apply_quantity_discounts(order.shopping_bag) + apply_value_discounts(net_shopping_bag_value))
   end
 
   private
@@ -21,11 +21,11 @@ class CalculateDiscounts
     discounts.select { |discount| discount.class == CumulativeValueDiscount }
   end
 
-  def apply_quantity_discounts(order)
+  def apply_quantity_discounts(shopping_bag)
     total_discount = 0.00
     discounts.each do |discount|
       if discount.is_a?(CumulativeQuantityDiscount)
-        total_discount += discount.discount_value(order)
+        total_discount += discount.discount_value(shopping_bag)
       end
     end
     total_discount

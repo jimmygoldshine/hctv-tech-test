@@ -9,14 +9,20 @@ class CumulativeQuantityDiscount
     @discount = args[:discount]
   end
 
-  def discount_value(order)
+  def discount_value(shopping_bag)
     discounted_value = 0.00
-    order.shopping_bag.each_pair do |delivery_type, broadcaster_list|
-      if delivery_type.type == delivery_method && broadcaster_list.size >= quantity_threshold
+    shopping_bag.each_pair do |delivery_type, broadcaster_list|
+      if delivery_methods_match?(delivery_type) && broadcaster_list.size >= quantity_threshold
         discounted_value += (broadcaster_list.size * delivery_type.price) * discount
       end
     end
     discounted_value
+  end
+
+  private
+
+  def delivery_methods_match?(delivery_type_obj)
+    delivery_type_obj.type == delivery_method
   end
 
 end

@@ -18,20 +18,13 @@ class Order
     pre_discount_total + calculate_discount(apply_discounts_obj)
   end
 
-  def pre_discount_total
-    shopping_bag.each_pair do |delivery, broadcaster_list|
-      self.gross_shopping_bag_value += (delivery.price * broadcaster_list.size)
-    end
-    gross_shopping_bag_value
-  end
+  private
+
+  attr_writer :shopping_bag, :gross_shopping_bag_value, :discount_value
 
   def calculate_discount(apply_discounts_obj)
     self.discount_value = apply_discounts_obj.apply(self)
   end
-
-  private
-
-  attr_writer :shopping_bag, :gross_shopping_bag_value, :discount_value
 
   def error_if_broadcaster_is_aleady_in_shopping_bag(broadcaster)
     shopping_bag.each_value do |broadcaster_list|
@@ -39,6 +32,13 @@ class Order
         raise "Error: Broadcaster is already in shopping bag"
       end
     end
+  end
+
+  def pre_discount_total
+    shopping_bag.each_pair do |delivery, broadcaster_list|
+      self.gross_shopping_bag_value += (delivery.price * broadcaster_list.size)
+    end
+    gross_shopping_bag_value
   end
 
 end

@@ -29,29 +29,26 @@ describe CalculateDiscounts do
 
     context "No quantity discount should be applied" do
 
-      let(:order) { instance_double("Order", :shopping_bag => { standard_delivery => ["disney", "discovery", "viacom"],
-                                                                express_delivery => ["horse and country"] }) }
       it "should deduct the correct amount" do
-        expect(promotion.send(:apply_quantity_discounts, order)).to eq(0.00)
+        shopping_bag = { standard_delivery => ["disney", "discovery", "viacom"], express_delivery => ["horse and country"] }
+        expect(promotion.send(:apply_quantity_discounts, shopping_bag)).to eq(0.00)
       end
     end
 
     context "One quantity discount should be applied" do
 
-      let(:order) { instance_double("Order", :shopping_bag => { express_delivery => ["disney", "discovery", "viacom"],
-                                                                standard_delivery => ["horse and country"] }) }
       it "should deduct the correct amount" do
-        expect(promotion.send(:apply_quantity_discounts, order)).to eq(15.00)
+        shopping_bag = { express_delivery => ["disney", "discovery", "viacom"], standard_delivery => ["horse and country"] }
+        expect(promotion.send(:apply_quantity_discounts, shopping_bag)).to eq(15.00)
       end
     end
 
     context "Two quantity discounts should be applied" do
 
-      let(:order) { instance_double("Order", :shopping_bag => { express_delivery => ["disney", "discovery", "viacom"],
-                                                                standard_delivery => ["horse and country", "itv", "channel 4"] }) }
       it "should deduct the correct amount" do
+        shopping_bag = { express_delivery => ["disney", "discovery", "viacom"], standard_delivery => ["horse and country", "itv", "channel 4"] }
         promotion.add_discount(quantity_discount_2)
-        expect(promotion.send(:apply_quantity_discounts, order)).to eq(18.00)
+        expect(promotion.send(:apply_quantity_discounts, shopping_bag)).to eq(18.00)
       end
     end
   end
