@@ -14,7 +14,8 @@ class Order
     (shopping_bag[delivery] ||= []).push(broadcaster)
   end
 
-  def total(apply_discounts_obj)
+  def total(apply_discounts_obj = nil)
+    return pre_discount_total if apply_discounts_obj == nil
     pre_discount_total - discount_total(apply_discounts_obj)
   end
 
