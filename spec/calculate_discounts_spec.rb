@@ -25,64 +25,25 @@ describe CalculateDiscounts do
     promotion.add_discount(quantity_discount_1)
   end
 
-  describe "PRIVATE: #apply_quantity_discounts(order)" do
+  describe "#add_discount" do
 
-    context "No quantity discount should be applied" do
+    context "adding a discount that is not in the discounts array" do
 
-      it "should deduct the correct amount" do
-        shopping_bag = { standard_delivery => ["disney", "discovery", "viacom"], express_delivery => ["horse and country"] }
-        expect(promotion.send(:apply_quantity_discounts, shopping_bag)).to eq(0.00)
+      it "should increase the discounts list by 1" do
+        expect { promotion.add_discount(quantity_discount_2) }.to change { promotion.discounts.size }.by(1)
       end
     end
 
-    context "One quantity discount should be applied" do
+    context "adding a discount that is in the discounts array" do
 
-      it "should deduct the correct amount" do
-        shopping_bag = { express_delivery => ["disney", "discovery", "viacom"], standard_delivery => ["horse and country"] }
-        expect(promotion.send(:apply_quantity_discounts, shopping_bag)).to eq(15.00)
+      it "should raise an error" do
+        expect { promotion.add_discount(quantity_discount_1) }.to raise_error(RuntimeError, /Error: That discount has already been added/)
       end
     end
 
-    context "Two quantity discounts should be applied" do
-
-      it "should deduct the correct amount" do
-        shopping_bag = { express_delivery => ["disney", "discovery", "viacom"], standard_delivery => ["horse and country", "itv", "channel 4"] }
-        promotion.add_discount(quantity_discount_2)
-        expect(promotion.send(:apply_quantity_discounts, shopping_bag)).to eq(18.00)
-      end
-    end
   end
 
-  describe "PRIVATE: #apply_value_discounts(gross_shopping_bag_value)" do
 
-    context "No value discount should be applied" do
-
-      gross_shopping_bag_value = 20.00
-
-      it "should deduct the correct amount" do
-        expect(promotion.send(:apply_value_discounts, gross_shopping_bag_value)).to eq(0.00)
-      end
-    end
-
-    context "only value discount should be applied" do
-
-      gross_shopping_bag_value = 60.00
-
-      it "should deduct the correct amount" do
-        expect(promotion.send(:apply_value_discounts, gross_shopping_bag_value)).to eq(6.00)
-      end
-    end
-
-    context "largest value discount should be applied" do
-
-      gross_shopping_bag_value = 60.00
-
-      it "should deduct the correct amount" do
-        promotion.add_discount(value_discount_2)
-        expect(promotion.send(:apply_value_discounts, gross_shopping_bag_value)).to eq(12.00)
-      end
-    end
-  end
 
   describe "#apply" do
 
@@ -93,7 +54,7 @@ describe CalculateDiscounts do
                                              :gross_shopping_bag_value => 50.00) }
 
       it "should return the correct discount" do
-        expect(promotion.apply(order)).to eq(-5.00)
+        expect(promotion.apply(order)).to eq(5.00)
       end
     end
 
@@ -103,7 +64,7 @@ describe CalculateDiscounts do
                                              :gross_shopping_bag_value => 60.00) }
 
       it "should return the correct discount" do
-        expect(promotion.apply(order)).to eq(-19.50)
+        expect(promotion.apply(order)).to eq(19.50)
       end
     end
 
@@ -114,7 +75,7 @@ describe CalculateDiscounts do
 
       it "should return the correct discount" do
         promotion.add_discount(value_discount_2)
-        expect(promotion.apply(order)).to eq(-10.0)
+        expect(promotion.apply(order)).to eq(10.0)
       end
     end
   end

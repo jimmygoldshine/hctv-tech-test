@@ -19,17 +19,23 @@ describe Order do
       order.add_item(disney, standard_delivery)
     end
 
-    it "should add broadcaster to correct delivery type in 'shopping_bag'" do
-      expect(order.shopping_bag[standard_delivery]).to eq([disney])
+    context "adding a broadcaster that is not in the shopping bag" do
+
+      it "should add broadcaster to correct delivery type in 'shopping_bag'" do
+        expect(order.shopping_bag[standard_delivery]).to eq([disney])
+      end
+
+      it "should add another broadcaster to correct delivery type in 'shopping_bag'" do
+        order.add_item(discovery, standard_delivery)
+        expect(order.shopping_bag[standard_delivery]).to eq([disney,discovery])
+      end
     end
 
-    it "should add another broadcaster to correct delivery type in 'shopping_bag'" do
-      order.add_item(discovery, standard_delivery)
-      expect(order.shopping_bag[standard_delivery]).to eq([disney,discovery])
-    end
+    context "adding a broadcaster that is in the shopping bag" do
 
-    it "should raise an error if broadcaster is already in 'shopping_bag'" do
-      expect{ order.add_item(disney, express_delivery) }.to raise_error(RuntimeError, /Error: Broadcaster is already in shopping bag/)
+      it "should raise an error" do
+        expect{ order.add_item(disney, express_delivery) }.to raise_error(RuntimeError, /Error: Broadcaster is already in shopping bag/)
+      end
     end
   end
 
@@ -40,7 +46,7 @@ describe Order do
     before do
       order.add_item(disney, standard_delivery)
       order.add_item(discovery, express_delivery)
-      allow(apply_discounts).to receive(:apply) { -3.00 }
+      allow(apply_discounts).to receive(:apply) { 3.00 }
     end
 
     it "should total up the correct price" do
@@ -54,7 +60,7 @@ describe Order do
 
     it "should give public access to gross_shopping_bag_value" do
       order.total(apply_discounts)
-      expect(order.discount_value).to eq(-3.0)
+      expect(order.discount_value).to eq(3.0)
     end
 
   end

@@ -26,12 +26,6 @@ discount_1 = CumulativeQuantityDiscount.new(delivery_type: express_delivery,
 discount_2 = CumulativeValueDiscount.new(shopping_bag_value_threshold: 30,
                                          discount: 0.1)
 
-# Create the discount calculation object
-promotion = CalculateDiscounts.new
-
-# Add discount objects to calculation object
-promotion.add_discount(discount_1)
-promotion.add_discount(discount_2)
 
 # Create new Advertising Material
 advertising_material = Material.new("WNP/SWCL001/010")
@@ -39,17 +33,24 @@ advertising_material = Material.new("WNP/SWCL001/010")
 # Create new Order
 order = Order.new(advertising_material)
 
+order.add_item(disney, standard_delivery)
+order.add_item(discovery, standard_delivery)
+order.add_item(viacom, standard_delivery)
+order.add_item(horse_and_country, express_delivery)
+
+# Create the discount calculation object
+promotion = CalculateDiscounts.new(order)
+
+# Add discount objects to calculation object
+promotion.add_discount(discount_1)
+promotion.add_discount(discount_2)
+
 require 'pry'; binding.pry
 
 puts 'Example 1:'
 puts "Advertising Material: #{advertising_material.id}"
-order.add_item(disney, standard_delivery)
-order.add_item(discovery, standard_delivery)
-order.add_item(viacom, standard_delivery)
 puts "Added Disney, Discovery and Viacom to order, all for standard delivery"
-order.add_item(horse_and_country, express_delivery)
 puts "Added Horse and Country for express delivery"
-pre_discount_total = order.pre_discount_total
 puts "Pre-discount total: $#{'%.2f' % pre_discount_total}"
 discount = order.calculate_discount(promotion)
 puts "Discount: $#{'%.2f' % discount}"
